@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instadrunkapp/dto/order.dart';
+import 'package:instadrunkapp/model/cart.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:instadrunkapp/constants.dart';
 import 'package:instadrunkapp/screens/checkout/widgets/location_picker.dart';
@@ -20,10 +22,14 @@ class _CheckoutState extends State<Checkout> {
   void _createOrder() async {
     final orderId = Uuid().v4();
 
-    await FirebaseFirestore.instance
-        .collection("orders")
-        .doc(orderId)
-        .set({"address": address, "status": OrderStatus.Initiated.toString()});
+    await FirebaseFirestore.instance.collection("orders").doc(orderId).set({
+      "address": address,
+      "status": OrderStatus.Initiated.toString(),
+      "products": Provider.of<Cart>(context, listen: false)
+          .items
+          .map((item) => item.product.id)
+          .toList(),
+    });
 
     Navigator.push(
         context,
