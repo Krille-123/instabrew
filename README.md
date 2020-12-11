@@ -1,3 +1,3 @@
-# Instadrunk
+# Instabrew
 
-This is a flutter app for delivery of craft beers.
+This is a flutter app for delivery of craft beers. It integrates with firestore.
